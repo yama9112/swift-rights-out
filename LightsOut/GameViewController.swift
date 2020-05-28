@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import Toast
 
 class GameViewController: UIViewController {
 
     @IBOutlet weak var verticalStackView: UIStackView!
     @IBOutlet weak var countLabel: UILabel!
     var list: Array<Data> = []
+    var result = false
     var line = 3
     var count = 0
     
@@ -36,6 +38,7 @@ class GameViewController: UIViewController {
         list.removeAll()
         count = 0
         countLabel.text = "手数：\(count)"
+        result = false
         
         for _ in 1...line {
 
@@ -68,6 +71,10 @@ class GameViewController: UIViewController {
     
     
     @objc func viewTaped(sender: UITapGestureRecognizer) {
+        if result {
+            return
+        }
+
         if let tapView = sender.view {
             let num = tapView.tag
             changeLight(num: num)
@@ -101,7 +108,8 @@ class GameViewController: UIViewController {
         countLabel.text = "手数：\(count)"
         
         if checkResult() {
-            print("win!!")
+            result = true
+            self.view.makeToast("Success!!", duration: 1.5)
         }
     }
     
